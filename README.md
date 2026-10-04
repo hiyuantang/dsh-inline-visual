@@ -32,9 +32,10 @@ inside its own frame.
 There is no expand control. The frame is already as tall as its content, so the
 only thing a control could add is blank space.
 
-The reporter is injected into the document head and runs under the same policy
-as the model's own scripts. If a document blocks inline scripts with its own
-CSP, no report arrives and the frame keeps the requested height.
+The reporter is injected into the document head ahead of the model's own markup,
+so it runs before any `<meta>` policy that document declares takes effect. A
+document's own CSP therefore does not stop the fit. Only a policy inherited from
+the embedding page can, and the frame then keeps the requested height.
 
 ### The retired name
 
@@ -214,6 +215,11 @@ attribute output matches the browser.
 - Visuals live in the transcript as tool arguments, so large documents cost
   tokens and durable log space. Use a file plus `present` above that size.
 - The frame fits its content down to 32 px and up to 1200 px; a taller visual
-  scrolls inside its own frame. If a document's own CSP blocks inline scripts,
-  no report arrives and the frame keeps the requested height.
+  scrolls inside its own frame.
+- A visual's own policy cannot stop the fit. The reporter is injected ahead of
+  the document's own markup, so it runs before any `<meta>` policy that document
+  declares takes effect. Four frames were measured against this: none, `script-src
+  'none'`, `default-src 'none'`, and a `sandbox` directive all reported their
+  height. A policy inherited from the embedding page is the case that would block
+  the report; the frame then keeps the requested height.
 - No file, network, or storage access inside the frame — that is the point.
