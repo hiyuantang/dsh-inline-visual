@@ -1,0 +1,8 @@
+# Bundle patch for `dsh-inline-visual`.
+#
+# The row names the package, not a file path. A profile that installs this
+# bundle resolves the name from its own node_modules, so the plugin can live in
+# a Git checkout, a registry tarball, or any other profile directory.
+- insert:
+    - id: inline-visual
+      name: dsh-inline-visual
