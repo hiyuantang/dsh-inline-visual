@@ -40,6 +40,13 @@ outline rather than a border, because the app applies
 and leave the visual's viewport a pixel short, which the browser answers with a
 scrollbar that has nothing to scroll.
 
+The frame is held out of sight until its first report arrives, then shown at the
+fitted height. The starting height is a guess, and painting it means the reader
+watches the visual resize — and anything drawn inside it repaint at the new
+size. Visibility, not `display: none`: a frame with no layout measures zero and
+would report nothing. A frame that never reports is shown anyway after 1.5s, so
+a visual is never lost to a missing report.
+
 The reporter is injected into the document head ahead of the model's own markup,
 so it runs before any `<meta>` policy that document declares takes effect. A
 document's own CSP therefore does not stop the fit. Only a policy inherited from

@@ -258,6 +258,13 @@ test('the frame reports its own height instead of offering an expand control', (
   assert.equal(document.indexOf('dsh-inline-visual:height') < document.indexOf('<h1>hi</h1>'), true)
 })
 
+test('the frame stays out of sight until its height is settled', () => {
+  const markup = renderTail([entry('a', { html: '<h1>hi</h1>', height: 600 })])
+  assert.equal(markup.includes('visibility:hidden'), true, 'the guess is not painted')
+  assert.equal(markup.includes('display:none'), false, 'a frame without layout measures zero')
+  assert.equal(markup.includes('height:600px'), true, 'the space is still held while it settles')
+})
+
 test('a reported height fits the frame to the content', () => {
   const { frameHeight, reportedHeight } = bundle.exports.__internals
 
