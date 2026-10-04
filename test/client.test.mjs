@@ -265,6 +265,19 @@ test('the frame stays out of sight until its height is settled', () => {
   assert.equal(markup.includes('height:600px'), true, 'the space is still held while it settles')
 })
 
+test('a frame that fits cannot show a scrollbar of its own', () => {
+  const { buildDocument } = bundle.exports.__internals
+  const document = buildDocument('<h1>hi</h1>')
+
+  assert.equal(document.includes('style.overflowY'), true, 'the reporter decides the overflow')
+  assert.equal(document.includes('?"auto":"hidden"'), true, 'a fitting document hides its bar')
+  assert.equal(
+    document.includes('height>1200?"auto":"hidden"'),
+    true,
+    'a document above the cap keeps its bar, because the content really does not fit',
+  )
+})
+
 test('a reported height fits the frame to the content', () => {
   const { frameHeight, reportedHeight } = bundle.exports.__internals
 

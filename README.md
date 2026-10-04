@@ -40,6 +40,13 @@ outline rather than a border, because the app applies
 and leave the visual's viewport a pixel short, which the browser answers with a
 scrollbar that has nothing to scroll.
 
+Once a report has gone out, a document that fits sets `overflow-y: hidden` on
+itself. The frame is about to be exactly as tall as the content, so there is
+nothing left to scroll, and no future rounding or environment difference can put
+a bar on a visual that has no use for one. A document taller than the 1200 px cap
+keeps its scrollbar, because that content genuinely does not fit and hiding the
+bar would hide the content with it.
+
 The frame is held out of sight until its first report arrives, then shown at the
 fitted height. The starting height is a guess, and painting it means the reader
 watches the visual resize — and anything drawn inside it repaint at the new
