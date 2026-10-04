@@ -274,6 +274,26 @@ test('a reported height fits the frame to the content', () => {
   assert.equal(frameHeight(null, 600), 600, 'no report means the requested height')
   assert.equal(frameHeight(null, 5000), 1200, 'a request is clamped, never fitted')
   assert.equal(frameHeight(null, 1), 120)
+  assert.equal(frameHeight(184.4, 600), 185, 'a fractional fit rounds up, never down')
+  assert.equal(frameHeight(32.2, 600), 33, 'the floor is a fit, so it rounds up too')
+})
+
+test('the frame edge and the fit never leave a pixel of scrollbar', () => {
+  const { buildDocument, css } = bundle.exports.__internals
+
+  const document = buildDocument('<p>x</p>')
+  assert.equal(document.includes('Math.ceil'), true, 'the report rounds up')
+  assert.equal(document.includes('clientHeight'), true, 'leftover overflow is added to the ask')
+  assert.equal(document.includes('Math.round(measure())'), false, 'rounding to nearest can fall short')
+
+  const frame = /\.dshiv_frame\{([^}]*)\}/.exec(css)
+  assert.notEqual(frame, null, 'the frame rule is present')
+  assert.equal(
+    frame[1].includes('border:0'),
+    true,
+    'a border would come out of the measured height under border-box sizing',
+  )
+  assert.equal(frame[1].includes('outline:'), true, 'the edge is drawn with an outline instead')
 })
 
 test('the Turn tail renders nothing without visuals', () => {

@@ -32,6 +32,14 @@ inside its own frame.
 There is no expand control. The frame is already as tall as its content, so the
 only thing a control could add is blank space.
 
+A fit must never fall short. Content height is often fractional — 13px text at
+1.5 line height is 19.5px a line — so the reporter rounds its measurement up and
+adds any overflow the document still reports. The frame's edge is drawn with an
+outline rather than a border, because the app applies
+`* { box-sizing: border-box }`: a border would come out of the frame's own height
+and leave the visual's viewport a pixel short, which the browser answers with a
+scrollbar that has nothing to scroll.
+
 The reporter is injected into the document head ahead of the model's own markup,
 so it runs before any `<meta>` policy that document declares takes effect. A
 document's own CSP therefore does not stop the fit. Only a policy inherited from
