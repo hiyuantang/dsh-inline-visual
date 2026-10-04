@@ -55,9 +55,13 @@ as a scroller traps the wheel there even when the document element cannot
 scroll.
 
 A document taller than the 1200 px cap keeps its scrollbar, because that content
-genuinely does not fit and hiding the bar would hide the content with it. A
-visual that draws its own scrollable panel keeps that panel too, and the wheel
-moves on to the conversation as soon as the panel reaches its end.
+genuinely does not fit and hiding the bar would hide the content with it. That
+bar is drawn thin and always visible rather than left to the platform's overlay
+bar, which shows itself only while a gesture lasts: the wheel over such a visual
+belongs to the visual, so a reader must be able to see there is more to reach
+before trying. A visual that draws its own scrollable panel keeps that panel
+too, and the wheel moves on to the conversation as soon as the panel reaches its
+end.
 
 The frame is held out of sight until its first report arrives, then shown at the
 fitted height. The starting height is a guess, and painting it means the reader

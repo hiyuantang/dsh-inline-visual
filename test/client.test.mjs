@@ -286,6 +286,21 @@ test('a frame that fits cannot show a scrollbar of its own', () => {
     true,
     'a document above the cap keys off the cap and keeps its bar, because the content really does not fit',
   )
+  assert.equal(
+    document.includes('doc.classList[fits?"remove":"add"]("dshiv-scrolls")'),
+    true,
+    'a visual that really scrolls claims the bar class, and a fitting one gives it back',
+  )
+  assert.equal(
+    document.includes('html.dshiv-scrolls::-webkit-scrollbar{width:10px;height:10px}'),
+    true,
+    'the bar is drawn by name, because a platform overlay bar waits for a gesture',
+  )
+  assert.equal(
+    document.includes('::-webkit-scrollbar-thumb{background:rgba(128,128,128,.5)'),
+    true,
+    'the bar carries its own colour, so it reads on either theme',
+  )
 })
 
 test('a reported height fits the frame to the content', () => {

@@ -1,6 +1,6 @@
 {
   "name": "dsh-inline-visual",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "description": "Render model-authored inline visuals in the DSH conversation",
   "type": "module",
