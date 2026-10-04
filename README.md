@@ -40,12 +40,24 @@ outline rather than a border, because the app applies
 and leave the visual's viewport a pixel short, which the browser answers with a
 scrollbar that has nothing to scroll.
 
-Once a report has gone out, a document that fits sets `overflow-y: hidden` on
-itself. The frame is about to be exactly as tall as the content, so there is
-nothing left to scroll, and no future rounding or environment difference can put
-a bar on a visual that has no use for one. A document taller than the 1200 px cap
-keeps its scrollbar, because that content genuinely does not fit and hiding the
-bar would hide the content with it.
+Once a report has gone out, a document that fits gives up scrolling outright,
+on the document element and on the body alike. The frame is about to be exactly
+as tall as the content, so there is nothing left to scroll, and no future
+rounding or environment difference can put a bar on a visual that has no use for
+one.
+
+Giving up scrolling also keeps the page moving under the pointer. A scrollable
+frame holds a wheel gesture until its own scrolling runs out, so a visual with a
+few stray pixels to scroll makes the conversation feel stuck wherever the
+pointer happens to rest on it. A non-scrollable frame passes the gesture
+straight through. The body is included because a visual that styles its own body
+as a scroller traps the wheel there even when the document element cannot
+scroll.
+
+A document taller than the 1200 px cap keeps its scrollbar, because that content
+genuinely does not fit and hiding the bar would hide the content with it. A
+visual that draws its own scrollable panel keeps that panel too, and the wheel
+moves on to the conversation as soon as the panel reaches its end.
 
 The frame is held out of sight until its first report arrives, then shown at the
 fitted height. The starting height is a guess, and painting it means the reader

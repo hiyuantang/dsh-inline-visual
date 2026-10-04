@@ -270,11 +270,21 @@ test('a frame that fits cannot show a scrollbar of its own', () => {
   const document = buildDocument('<h1>hi</h1>')
 
   assert.equal(document.includes('style.overflowY'), true, 'the reporter decides the overflow')
-  assert.equal(document.includes('?"auto":"hidden"'), true, 'a fitting document hides its bar')
+  assert.equal(document.includes('fits?"hidden":"auto"'), true, 'a fitting document gives up scrolling')
   assert.equal(
-    document.includes('height>1200?"auto":"hidden"'),
+    document.includes('body.style.overflowY=fits?"hidden":held'),
     true,
-    'a document above the cap keeps its bar, because the content really does not fit',
+    'a body the visual styled as a scroller would hold the wheel instead',
+  )
+  assert.equal(
+    document.includes('held=body.style.overflowY'),
+    true,
+    'the visual keeps its own body overflow back once the content stops fitting',
+  )
+  assert.equal(
+    document.includes('fits=!(height>1200)'),
+    true,
+    'a document above the cap keys off the cap and keeps its bar, because the content really does not fit',
   )
 })
 
